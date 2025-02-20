@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: python-flask-docker
+ labels: 
+  app: python-flask-docker
+spec:
+  replicas: 1
+  selector:
+   matchLabels:
+     app: python-flask-docker
+  template:
+    metadata:
+      labels:
+        app: python-flask-docker
+    spec:
+      containers: 
+      - name: python-flask-docker
+        image: dockersainadh/python-flask-docker   
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: python-flask-docker-service
+ Labels: 
+   app: python-flask-docker
+spec:
+  selector:
+    app: python-flask-docker
+  ports:
+  - name: http
+    protocol: tcp
+    port: 80
+    targetPort: 8080
+  type: LoadBalancer
+      
